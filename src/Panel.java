@@ -9,7 +9,7 @@ public class Panel extends JFrame {
         //JTextArea
         JTextArea area = new JTextArea("Student Name and ID: LIU Tao Tao(20084489d)\n" +
                 "Student Name and ID: XueZi Ning()\n" +
-                date.getTime());
+                date);
         //second part:
         String[] column = {"ISBN", "Title", "Available"};
         DefaultTableModel model = new DefaultTableModel(column,0);
