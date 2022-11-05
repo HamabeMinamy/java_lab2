@@ -1,5 +1,4 @@
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public class TestBook {
 
@@ -16,7 +15,7 @@ public class TestBook {
 		book2.setTitle("Book2");
 		book2.setAvailable(true);
 		bookLinkedList.add(book2);
-        
+
 		Book book3 = new Book();
 		book3.setISBN("33333333");
 		book3.setTitle("Book3");
@@ -26,14 +25,14 @@ public class TestBook {
         queue.enqueue("Borrower1");
         queue.enqueue("Borrower2");
         queue.enqueue("Borrower3");
-               
-        
+
+
 		Book book4 = new Book();
 		book4.setISBN("44444444");
 		book4.setTitle("Book4");
 		book4.setAvailable(true);
         bookLinkedList.add(book4);
-        
+
         Iterator<Book> it = bookLinkedList.iterator();
         Book bk;
         while (it.hasNext())
@@ -45,7 +44,7 @@ public class TestBook {
         	{
         		System.out.println(bk.getISBN()+" "+bk.getTitle()+": Not available");
         		System.out.print("\tReserved queue: ");
-        	       for(String name: queue.getList()) {	
+        	       for(String name: queue.getList()) {
         	            System.out.print(name+" ");
         	       }
         	    System.out.println();

@@ -50,6 +50,7 @@ public class MyLinkedList<E> implements MyList<E> {
 			tail.next = new Node<>(e);
 			tail = tail.next;
 		}
+		size++;
 	}
 
 	@Override /** Add a new element at the specified index 
@@ -57,7 +58,7 @@ public class MyLinkedList<E> implements MyList<E> {
 	public void add(int index, E e) {
 		if(index == 0) addFirst(e);
 		else if(index>=size) addLast(e);
-		else{
+		else {
 			Node<E> current = head;
 			for (int i = 1; i < index; i++) {
 				current = current.next;
