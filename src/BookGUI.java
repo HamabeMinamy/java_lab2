@@ -5,43 +5,45 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
-
-public class BookGUI extends JFrame implements ActionListener, ListSelectionListener {
-    MyLinkedList<Book> list = new MyLinkedList<>();
-    JTextField isbn = new JTextField(20);
-    JTextField title = new JTextField(20);
-    JButton addButton = new JButton("Add");
-    JButton edit = new JButton("Edit");
-    JButton save = new JButton("Save");
-    JButton delete = new JButton("delete");
-    JButton search = new JButton("Search");
-    JButton more = new JButton("More>>");
-    JButton load = new JButton("Load Test Data");
-    JButton displayAll = new JButton("Display All");
-    JButton displayAllByIsbn = new JButton("Display All by ISBN");
-    JButton displayAllByTitle = new JButton("Display All by Title");
-    JButton exit = new JButton("Exit");
-    JButton borrow = new JButton("Borrow");
-    JButton buttonReturn = new JButton("Return");
-    JButton reserve = new JButton("Reserve");
-    JButton waitingQueue = new JButton("Waiting Queue");
-
-    JButton[] allButton = {save, addButton, edit, delete, search, more,
-            load, displayAll, displayAllByIsbn, displayAllByTitle, exit};
-    JButton[] allDialogButton = {borrow,buttonReturn,reserve,waitingQueue};
-    String[] column = {"ISBN", "Title", "Available"};
-    DefaultTableModel model = new DefaultTableModel(column, 0);
-    JTable table = new JTable(model);
-    boolean isAscendingByISBN = true;
-    boolean isAscendingByTitle = true;
-    JDialog dialog = new JDialog(this);
-    JTextArea dialogArea = new JTextArea(4,1);
-    JTextArea area2 = new JTextArea(1,1);
+public class BookGUI extends JFrame implements ActionListener, ListSelectionListener{
+    private final MyLinkedList<Book> list = new MyLinkedList<>();
+    private final JTextField index = new JTextField(4);
+    private final JTextField isbn = new JTextField(20);
+    private final JTextField title = new JTextField(20);
+    private final JButton addButton = new JButton("Add");
+    private final JButton edit = new JButton("Edit");
+    private final JButton save = new JButton("Save");
+    private final JButton delete = new JButton("delete");
+    private final JButton search = new JButton("Search");
+    private final JButton more = new JButton("More>>");
+    private final JButton load = new JButton("Load Test Data");
+    private final JButton displayAll = new JButton("Display All");
+    private final JButton displayAllByIsbn = new JButton("Display All by ISBN");
+    private final JButton displayAllByTitle = new JButton("Display All by Title");
+    private final JButton exit = new JButton("Exit");
+    private final JButton borrow = new JButton("Borrow");
+    private final JButton buttonReturn = new JButton("Return");
+    private final JButton reserve = new JButton("Reserve");
+    private final JButton waitingQueue = new JButton("Waiting Queue");
+    private final JButton[] allButton = {save, addButton, edit, delete, search, more,
+        load, displayAll, displayAllByIsbn, displayAllByTitle, exit};
+    private final JButton[] allDialogButton = {borrow,buttonReturn,reserve,waitingQueue};
+    private final String[] column = {"ISBN", "Title", "Available"};
+    private final DefaultTableModel model = new DefaultTableModel(column, 0);
+    private final JTable table = new JTable(model);
+    private boolean isAscendingByISBN = true;
+    private boolean isAscendingByTitle = true;
+    private final JDialog dialog = new JDialog(this);
+    private final JTextArea dialogArea = new JTextArea(4,1);
+    private final JTextArea area2 = new JTextArea(1,1);
 
     public BookGUI() {
+        //access the database:
+
         Date date = new Date();
         //JTextArea
         JTextArea area = new JTextArea("Student Name and ID: LIU Tao Tao(20084489d)\n" +
@@ -58,6 +60,8 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         JPanel body = new JPanel(new GridLayout(3, 1));//third part's whole panel
         //top
         JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        top.add(new JLabel("Index:"));
+        top.add(index);
         top.add(new JLabel("ISBN:"));
         top.add(isbn);
         top.add(new JLabel("Title:"));
@@ -101,6 +105,11 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         add(area);
         add(p1);
         add(body);
+        setTitle("Library Admin System");
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
 
         //JDialog
         dialog.setLayout(new GridLayout(3, 1));
@@ -137,6 +146,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                 }
                 addNewBook(ISBN, inputTitle);
                 showData();
+                writeTxt();
             } else {
                 JOptionPane.showMessageDialog
                         (null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
@@ -161,6 +171,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                 if (uniqueBook) {
                     addNewBook(ISBN, testTitle);
                     showData();
+                    writeTxt();
                 }
 
             }
@@ -204,6 +215,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                             current.setISBN(ISBN);
                             current.setTitle(inputTitle);
                             showData();
+                            writeTxt();
                             switchButton(allButton);
                         }
                     }
@@ -212,6 +224,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                         if (current.getISBN().equals(ISBN)) {
                             current.setTitle(inputTitle);
                             showData();
+                            writeTxt();
                             switchButton(allButton);
 
                         }
@@ -236,6 +249,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                         list.remove(current);
                         hasBook = true;
                         showData();
+                        writeTxt();
                         isbn.setText(null);
                         isbn.setText(null);
                         break;
@@ -254,9 +268,13 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
             String inputTitle = title.getText();
             if (!ISBN.equals("") && !inputTitle.equals("")) {
                 showSelectedData(ISBN, inputTitle);
-                isbn.setText(null);
-                title.setText(null);
             }
+            else if(!index.equals("")){
+                retrieveFromTxt(index.getText());
+            }
+            index.setText(null);
+            isbn.setText(null);
+            title.setText(null);
         }
         else if (e.getSource() == displayAll) {
             showData();
@@ -354,6 +372,9 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                 }
                 }
         }
+        else if (e.getSource() == exit){
+            System.exit(0);
+        }
     }
 
     @Override
@@ -423,6 +444,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         isbn.setText(null);
         title.setText(null);
         model.fireTableDataChanged();
+
     }
 
     private void switchButton(JButton[] allButton) {
@@ -431,14 +453,53 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
             button.setEnabled(!button.isEnabled());
         }
     }
+    private void writeTxt() {
+        try{
+            PrintWriter outputStream = new PrintWriter(new FileWriter("databaseManagement.txt"));
+            int index =0;
+
+            for (Book book :
+                    list) {
+                index++;
+                outputStream.write(index + "\n");
+                outputStream.write(book.getISBN() +"\n");
+                outputStream.write(book.getTitle() + "\n");
+                if (book.isAvailable())
+                    outputStream.write("Yes\n");
+                else
+                    outputStream.write("No\n");
+            }
+
+            if (outputStream != null){
+                outputStream.close();
+            }
+
+        }
+        catch (Exception e){
+        }
+
+    }
+    private void retrieveFromTxt(String input){
+        try{
+            BufferedReader inputStream = new BufferedReader(new FileReader("databaseManagement.txt"));
+            String l;
+            while ((l=inputStream.readLine())!= null){
+                if (l.equals(input)){
+                    String ISBN = inputStream.readLine();
+                    String title = inputStream.readLine();
+                    showSelectedData(ISBN,title);
+                }
+            }
+        }
+        catch (Exception e){
+
+        }
+
+    }
 
     public static void main(String[] args) {
         BookGUI frame = new BookGUI();
-        frame.setTitle("Library Admin System");
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+
     }
 
 }
