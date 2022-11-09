@@ -40,6 +40,8 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
     private final JDialog dialog = new JDialog(this);
     private final JTextArea dialogArea = new JTextArea(4,1);
     private final JTextArea area2 = new JTextArea(1,1);
+    private final JPanel panel = new JPanel(new FlowLayout());
+
 
     public BookGUI() {
         //access the database:
@@ -112,8 +114,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         setVisible(true);
 
         //JDialog
-        dialog.setLayout(new GridLayout(3, 1));
-        JPanel panel = new JPanel(new FlowLayout());
+        dialog.setLayout(new BorderLayout());
         borrow.setEnabled(false);
         switchButton(allDialogButton);
         borrow.addActionListener(this);
@@ -124,9 +125,9 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         panel.add(buttonReturn);
         panel.add(reserve);
         panel.add(waitingQueue);
-        dialog.add(dialogArea);
-        dialog.add(panel);
-        dialog.add(area2);
+        dialog.add(dialogArea,BorderLayout.NORTH);
+        dialog.add(panel,BorderLayout.CENTER);
+        dialog.add(area2,BorderLayout.SOUTH);
         dialog.setVisible(false);
     }
 
@@ -269,7 +270,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
             if (!ISBN.equals("") && !inputTitle.equals("")) {
                 showSelectedData(ISBN, inputTitle);
             }
-            else if(!index.equals("")){
+            else if(!index.getText().equals("")){
                 retrieveFromTxt(index.getText());
             }
             index.setText(null);
@@ -438,6 +439,10 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
 
     private void addNewBook(String ISBN, String inputTitle) {
         Book newBook = new Book();
+        JLabel label = new JLabel();
+        label.setIcon(new ImageIcon("img.png"));
+        panel.setBounds(70, 75, 600, 450);
+        panel.add(label);
         newBook.setISBN(ISBN);
         newBook.setTitle(inputTitle);
         list.add(newBook);
