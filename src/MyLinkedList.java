@@ -114,8 +114,8 @@ public class MyLinkedList<E> implements MyList<E> {
 
 	}
 
-	@Override /** Remove the element at the specified position in this 
-	 *  list. Return the element that was removed from the list. */
+	@Override /* Remove the element at the specified position in this
+	   list. Return the element that was removed from the list. */
 	public E remove(int index) {
 		if (index<0 || index>=size)
 			return null;
@@ -137,7 +137,7 @@ public class MyLinkedList<E> implements MyList<E> {
 		// Left as an exercise
 	}
 
-	@Override /** Override toString() to return elements in the list */
+	@Override /* Override toString() to return elements in the list */
 	public String toString() {
 		StringBuilder result = new StringBuilder("[");
 
@@ -156,7 +156,7 @@ public class MyLinkedList<E> implements MyList<E> {
 		return result.toString();
 	}
 
-	@Override /** Clear the list */
+	@Override /* Clear the list */
 	public void clear() {
 		// Left as an exercise
 		head = null;
@@ -198,7 +198,7 @@ public class MyLinkedList<E> implements MyList<E> {
 		// Left as an exercise
 		Node<E> current = head;
 		for (int i = 0; i < size; i++) {
-			if (current.element.equals((E)e))
+			if (current.element.equals(e))
 				return i;
 			current = current.next;
 		}
@@ -212,7 +212,7 @@ public class MyLinkedList<E> implements MyList<E> {
 		Node<E> current = head;
 		int index = -1;
 		for (int i = 0; i < size; i++) {
-			if (current.element.equals((E)e))
+			if (current.element.equals(e))
 				index = i;
 			current = current.next;
 		}
