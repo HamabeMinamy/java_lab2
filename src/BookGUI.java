@@ -49,7 +49,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         Date date = new Date();
         //JTextArea
         JTextArea area = new JTextArea("Student Name and ID: LIU Tao Tao(20084489d)\n" +
-                "Student Name and ID: XUE Zi Ning()\n" +
+                "Student Name and ID: XUE Zi Ning(20093963d)\n" +
                 date);
         //second part:
         ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
@@ -288,24 +288,28 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
             isAscendingByTitle = showSortedDataByISBN(isAscendingByTitle);
         }
         else if (e.getSource() == more) {
-            dialog.setVisible(true);
+
             String ISBN = isbn.getText();
+            boolean hasBook = false;
             if (!ISBN.equals("")) {
                 for (Book book :
                         list) {
+                    dialog.setVisible(true);
                     if (book.getISBN().equals(ISBN)) {
                         dialogArea.setText("ISBN: " +
                                 book.getISBN() + "\nTitle: " +
                                 book.getTitle() + "\nAvailable: " +
                                 book.isAvailable());
-
-
-
-
+                        hasBook=true;
                     }
                 }
 
             }
+            if (!hasBook) {
+                JOptionPane.showMessageDialog
+                        (null, "Book ISBN has not existed in the current database");
+            }
+
         }
         else if (e.getSource() == borrow){
             switchButton(allDialogButton);
