@@ -208,7 +208,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                 if (row != -1) {
                     String selectedISBN = (String) model.getValueAt(row, 0);
                     for (Book current : list) {
-                        if (current.getISBN().equals(ISBN)) {
+                        if (current.getISBN().equals(ISBN) && !current.getISBN().equals(model.getValueAt(row,0))) {
                             JOptionPane.showMessageDialog
                                     (null, "Book ISBN exists in the current database");
                             return;
