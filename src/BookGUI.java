@@ -49,7 +49,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         Date date = new Date();
         //JTextArea
         JTextArea area = new JTextArea("Student Name and ID: LIU Tao Tao(20084489d)\n" +
-                "Student Name and ID: XueZi Ning()\n" +
+                "Student Name and ID: XUE Zi Ning()\n" +
                 date);
         //second part:
         ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
