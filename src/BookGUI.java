@@ -41,11 +41,11 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
     private final JTextArea dialogArea = new JTextArea(4,1);
     private final JTextArea area2 = new JTextArea(1,1);
     private final JPanel panel = new JPanel(new FlowLayout());
-
+    private ImageIcon icon = null;
+    JLabel label = new JLabel();
 
     public BookGUI() {
         //access the database:
-
         Date date = new Date();
         //JTextArea
         JTextArea area = new JTextArea("Student Name and ID: LIU Tao Tao(20084489d)\n" +
@@ -121,14 +121,20 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         buttonReturn.addActionListener(this);
         reserve.addActionListener(this);
         waitingQueue.addActionListener(this);
-        panel.add(borrow);
-        panel.add(buttonReturn);
-        panel.add(reserve);
-        panel.add(waitingQueue);
+        panel.setLayout(new BorderLayout());
+        JPanel p2 = new JPanel();
+        p2.add(borrow);
+        p2.add(buttonReturn);
+        p2.add(reserve);
+        p2.add(waitingQueue);
+        panel.add(p2,BorderLayout.NORTH);
+        panel.add(label,BorderLayout.CENTER);
         dialog.add(dialogArea,BorderLayout.NORTH);
         dialog.add(panel,BorderLayout.CENTER);
         dialog.add(area2,BorderLayout.SOUTH);
         dialog.setVisible(false);
+        dialog.setLocationRelativeTo(null);
+        dialog.setSize(500,400);
     }
 
     @Override
@@ -288,7 +294,6 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
             isAscendingByTitle = showSortedDataByISBN(isAscendingByTitle);
         }
         else if (e.getSource() == more) {
-
             String ISBN = isbn.getText();
             boolean hasBook = false;
             if (!ISBN.equals("")) {
@@ -301,9 +306,9 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                                 book.getTitle() + "\nAvailable: " +
                                 book.isAvailable());
                         hasBook=true;
+                        showImage(book);
                     }
                 }
-
             }
             if (!hasBook) {
                 JOptionPane.showMessageDialog
@@ -440,11 +445,29 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         }
 
     }
+    private void showImage(Book book){
+        if (book.getTitle().contains("Java")){
+            icon = new ImageIcon("java.jpg");
+        }
+        else if (book.getTitle().contains("C++")){
+            icon = new ImageIcon("C++.jpg");
+        }
+        else if (book.getTitle().contains("HTML")){
+            icon = new ImageIcon("HTML.jpg");
+        }
+        else {
+            icon = new ImageIcon("Book.jpg");
+        }
+        Image image = icon.getImage();
+        Image newImage = image.getScaledInstance(150,200,Image.SCALE_SMOOTH);
+        icon = new ImageIcon(newImage);
+        label.setIcon(icon);
+
+
+    }
 
     private void addNewBook(String ISBN, String inputTitle) {
         Book newBook = new Book();
-        JLabel label = new JLabel();
-        label.setIcon(new ImageIcon("img.png"));
         panel.setBounds(70, 75, 600, 450);
         panel.add(label);
         newBook.setISBN(ISBN);
