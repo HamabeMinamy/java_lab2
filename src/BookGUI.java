@@ -50,7 +50,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         //JTextArea
         JTextArea area = new JTextArea("Student Name and ID: LIU Tao Tao(20084489d)\n" +
                 "Student Name and ID: XUE Zi Ning(20093963d)\n" +
-                date);
+                date+ "\n");
         //second part:
         ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
                 .setHorizontalAlignment(JLabel.CENTER); // align header to center
@@ -103,10 +103,10 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         body.add(center);
         body.add(bottom);
 
-        setLayout(new GridLayout(3, 1));
-        add(area);
-        add(p1);
-        add(body);
+        setLayout(new BorderLayout());
+        add(area,BorderLayout.NORTH);
+        add(p1, BorderLayout.CENTER);
+        add(body, BorderLayout.SOUTH);
         setTitle("Library Admin System");
         setSize(800, 600);
         setLocationRelativeTo(null);
