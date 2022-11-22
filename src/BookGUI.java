@@ -17,7 +17,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
     private final JButton addButton = new JButton("Add");
     private final JButton edit = new JButton("Edit");
     private final JButton save = new JButton("Save");
-    private final JButton delete = new JButton("delete");
+    private final JButton delete = new JButton("Delete");
     private final JButton search = new JButton("Search");
     private final JButton more = new JButton("More>>");
     private final JButton load = new JButton("Load Test Data");
@@ -42,6 +42,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
     private final JTextArea area2 = new JTextArea(1,1);
     private final JPanel panel = new JPanel(new FlowLayout());
     private ImageIcon icon = null;
+    private String ISBN1;
     JLabel label = new JLabel();
 
     public BookGUI() {
@@ -185,11 +186,11 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
 
         }
         else if (e.getSource() == edit) {
-            String ISBN = isbn.getText();
+            ISBN1 = isbn.getText();
             boolean hasBook = false;
-            if (!ISBN.equals("")) {
+            if (!ISBN1.equals("")) {
                 for (Book current : list) {
-                    if (current.getISBN().equals(ISBN)) {
+                    if (current.getISBN().equals(ISBN1)) {
                         title.setText(current.getTitle());
                         hasBook = true;
                         break;
@@ -219,6 +220,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                                     (null, "Book ISBN exists in the current database");
                             return;
                         } else if (selectedISBN.equals(current.getISBN())) {
+
                             current.setISBN(ISBN);
                             current.setTitle(inputTitle);
                             showData();
@@ -228,7 +230,8 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                     }
                 } else {
                     for (Book current : list) {
-                        if (current.getISBN().equals(ISBN)) {
+                        if (current.getISBN().equals(ISBN1)) {
+                            current.setISBN(ISBN);
                             current.setTitle(inputTitle);
                             showData();
                             writeTxt();

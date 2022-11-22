@@ -1,12 +1,4 @@
 1
-0131450913
-HTML How to Program
-Yes
-2
-0131857576
-C++ How to Program
-Yes
-3
-0132222205
-Java How to Program
+0123456789
+Java
 Yes
