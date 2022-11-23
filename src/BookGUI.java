@@ -9,6 +9,8 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Scanner;
+
 public class BookGUI extends JFrame implements ActionListener, ListSelectionListener{
     private final MyLinkedList<Book> list = new MyLinkedList<>();
     private final JTextField index = new JTextField(4);
@@ -261,7 +263,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                         showData();
                         writeTxt();
                         isbn.setText(null);
-                        isbn.setText(null);
+                        title.setText(null);
                         break;
                     }
 
@@ -276,10 +278,8 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         else if (e.getSource() == search) {
             String ISBN = isbn.getText();
             String inputTitle = title.getText();
-            if (!ISBN.equals("") && !inputTitle.equals("")) {
-                showSelectedData(ISBN, inputTitle);
-            }
-            else if(!index.getText().equals("")){
+            showSelectedData(ISBN, inputTitle);
+            if(!index.getText().equals("")){
                 retrieveFromTxt(index.getText());
             }
             index.setText(null);
@@ -332,6 +332,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                 }
 
             }
+            writeTxt();
             area2.setText("The book is borrowed.");
         }
         else if (e.getSource() == buttonReturn){
@@ -438,12 +439,15 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         model.setRowCount(0);
         Object[] row = new Object[3];
         for (Book current : list) {
-            if (current.getISBN().contains(ISBN) && current.getTitle().contains(inputTitle)) {
+            if ((current.getISBN().contains(ISBN) && current.getTitle().contains(inputTitle) )
+                    ||(current.getISBN().contains(ISBN) &&  inputTitle.equals(""))
+            || (ISBN.equals("") && current.getTitle().contains(inputTitle))) {
                 row[0] = current.getISBN();
                 row[1] = current.getTitle();
                 row[2] = current.isAvailable();
                 model.addRow(row);
             }
+
 
         }
 
@@ -531,9 +535,36 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         }
 
     }
+    public void read(){
+        try{
+            Scanner scan = new Scanner(new FileReader("databaseManagement.txt"));
+            while (scan.hasNextLine()){
+                scan.nextLine();
+                String ISBN = scan.nextLine();
+                String title = scan.nextLine();
+                String flag = scan.nextLine();
+                boolean available = false;
+                if (flag.equals("Yes")){
+                    available = true;
+                }
+                Book book = new Book();
+                book.setISBN(ISBN);
+                book.setTitle(title);
+                book.setAvailable(available);
+                list.add(book);
+
+            }
+            model.fireTableDataChanged();
+
+        }
+        catch(Exception e) {
+            System.out.println("The file cannot be found.");
+        }
+    }
 
     public static void main(String[] args) {
         BookGUI frame = new BookGUI();
+        frame.read();
 
     }
 
