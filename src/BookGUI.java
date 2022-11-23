@@ -555,6 +555,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
 
             }
             model.fireTableDataChanged();
+            showData();
 
         }
         catch(Exception e) {
