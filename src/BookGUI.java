@@ -228,6 +228,8 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                             showData();
                             writeTxt();
                             switchButton(allButton);
+                            isbn.setText(null);
+                            title.setText(null);
                         }
                     }
                 } else {
@@ -238,7 +240,8 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                             showData();
                             writeTxt();
                             switchButton(allButton);
-
+                            isbn.setText(null);
+                            title.setText(null);
                         }
 
 
@@ -343,6 +346,7 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
                         switchButton(allDialogButton);
                         book.setAvailable(true);
                         area2.setText("The book is returned.");
+                        writeTxt();
                     }
                     else{
                         area2.setText("The book is returned.\n" +
@@ -439,14 +443,22 @@ public class BookGUI extends JFrame implements ActionListener, ListSelectionList
         model.setRowCount(0);
         Object[] row = new Object[3];
         for (Book current : list) {
-            if ((current.getISBN().contains(ISBN) && current.getTitle().contains(inputTitle) )
-                    ||(current.getISBN().contains(ISBN) &&  inputTitle.equals(""))
-            || (ISBN.equals("") && current.getTitle().contains(inputTitle))) {
+            if ((current.getISBN().contains(ISBN) &&  inputTitle.equals(""))||
+                    (ISBN.equals("") && current.getTitle().contains(inputTitle))) {
                 row[0] = current.getISBN();
                 row[1] = current.getTitle();
                 row[2] = current.isAvailable();
                 model.addRow(row);
             }
+            else if ((current.getISBN().contains(ISBN) && !ISBN.equals("")) ||
+                    (current.getTitle().contains(inputTitle) && !inputTitle.equals(""))){
+                row[0] = current.getISBN();
+                row[1] = current.getTitle();
+                row[2] = current.isAvailable();
+                model.addRow(row);
+
+            }
+
 
 
         }
